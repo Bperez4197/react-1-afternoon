@@ -1,58 +1,64 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
 
 
 export default class FilterString extends Component {
 
-        constructor(props){
-            super(props);
+    constructor(props) {
+        super(props);
 
-            this.state= {
-                unFilteredArray: [ "James", "Jessica", "Melody", "Tyler", "Blake", "Jennifer", "Mark", "Maddy" ],
-                userInput: '' ,
-                filteredArray: []
+        this.state = {
+            unFilteredArray: ["James", "Jessica", "Melody", "Tyler", "Blake", "Jennifer", "Mark", "Maddy"],
+            userInput: '',
+            filteredArray: []
+        }
+
+    }
+
+    updateUserInput(value) {
+        this.setState({
+            userInput: value
+        })
+    }
+
+    filterString() {
+        let arr = this.state.unFilteredArray.slice();
+
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].includes(this.state.userInput)) {
+                
+                this.state.filteredArray.push(arr[i])
             }
-
         }
-
-        updateUserInput(value){
-            this.setState({
-                userInput: value
-            })
-        }
-
-        filterString(){
-            let arr = this.state.unFilteredArray.slice();
-            
-            for(let i = 0; i < arr.length;i++){
-                if(arr[i] === this.state.userInput){
-                    this.state.filteredArray.push(arr[i])
-                }
-            }
-            this.setState({
-                filteredArray: this.state.filteredArray
-            })
-        }
+        this.setState({
+            filteredArray: this.state.filteredArray
+        })
+    }
+    
 
 
 
 
-
-    render(){
-        const {unFilteredArray,userInput,filteredArray} = this.state;
+    render() {
+        const { unFilteredArray, userInput, filteredArray } = this.state;
 
         return (
-            <div className="puzzleBox filterObjectPB">
+            <div className="puzzleBox filterObjectPB" key={filteredArray} onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    this.filterString()
+                }
+            }}>
 
-            <h4>Filter String</h4>
+                <h4>Filter String</h4>
 
-            <span className="puzzleText">Unfiltered:{ JSON.stringify(unFilteredArray,null,2) } </span>
+                <span className="puzzleText">Unfiltered:{JSON.stringify(unFilteredArray, null, 2)} </span>
 
-            <input onChange={(e) => this.updateUserInput(e.target.value) } value={userInput} className="inputLine"></input>
+                <input onChange={(e) => this.updateUserInput(e.target.value)} value={userInput} className="inputLine"></input>
 
-            <button onClick={()=> this.filterString()}className="confirmationButton">Filter</button>
+                <button onClick={() => this.filterString()} className="confirmationButton">Filter</button>
 
-            <span className="resultsBox filterStringRB">Filtered: { JSON.stringify(filteredArray,null,2) }</span>
+                <span className="resultsBox filterStringRB">Filtered: {JSON.stringify(filteredArray, null, 2)}</span>
             </div>
-        
-        )}
+
+        )
+    }
 }
